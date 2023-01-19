@@ -39,17 +39,22 @@ public class npc_velma : o_npcharacter, IpoolObject {
 
     void Start () {
 
-        gui_player.othercharacter = new o_npcharacter[4];
+        gui_player.othercharacter = new o_npcharacter[1];
         gui_player.othercharacter[0] = this;
+        /*
         gui_player.othercharacter[1] = GameObject.Find("Support Bots_1").GetComponent<o_npcharacter>();
         gui_player.othercharacter[2] = GameObject.Find("Support Bots_2").GetComponent<o_npcharacter>();
         gui_player.othercharacter[3] = GameObject.Find("Support Bots_3").GetComponent<o_npcharacter>();
+        */
 
+        /*
         characters[0] = GameObject.Find("Support Bots_1").GetComponent<o_npcharacter>();
         characters[1] = GameObject.Find("Support Bots_2").GetComponent<o_npcharacter>();
         characters[2] = GameObject.Find("Support Bots_3").GetComponent<o_npcharacter>();
+        */
     }
 
+    /*
     bool checkifcharadead()
     {
 
@@ -65,6 +70,7 @@ public class npc_velma : o_npcharacter, IpoolObject {
         //print(deadcount);
         if (deadcount == 3) return true; else return false;
     }
+    */
 
     public override void AIFunction()
     {
@@ -72,14 +78,11 @@ public class npc_velma : o_npcharacter, IpoolObject {
         {
 
             case CHARACTER_STATEMACHINE.STAND:
-                if (checkifcharadead())
+                constant_regen = false;
+                target = AquireTarget(false);
+                if (target != null)
                 {
-                    constant_regen = false;
-                    target = AquireTarget(false);
-                    if (target != null)
-                    {
-                        characterstates = CHARACTER_STATEMACHINE.MOVING;
-                    }
+                    characterstates = CHARACTER_STATEMACHINE.MOVING;
                 }
                 break;
 

@@ -261,6 +261,8 @@ public abstract class o_character : MonoBehaviour
 
                     //Find any enemy that contains the same tag as the target
                     foreach (o_character c in targ) {
+                        if (c == this)
+                            continue;
                         if (targ.Find(x => c.type.Contains(subject.type)))
                         {
                             target_characters.Add(c);

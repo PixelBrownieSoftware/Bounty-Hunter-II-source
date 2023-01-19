@@ -54,6 +54,7 @@ public class Batch
 public struct s_characterdat
 {
     public string batch;
+    public string faction;
     public bool is_disabled;
     public string name;
     public string file_location;
@@ -358,7 +359,11 @@ public class s_levelmanager : MonoBehaviour {
 
         for (int i = 0; i < enemies_in_level.Count; i++)
         {
-            enemies_in_level[i].cur_faction = s_factionhandler.GetFaction(enemies_in_level[i].type);
+            print("name: " + enemies_in_level[i].name + " " + enemies_in_level[i].cur_faction);
+            if (enemies_in_level[i].cur_faction == "")
+            {
+                enemies_in_level[i].cur_faction = s_factionhandler.GetFaction(enemies_in_level[i].type);
+            }
             enemies_in_level[i].AddTargets(enemies_in_level);
         }
     }
@@ -480,18 +485,20 @@ public class s_levelmanager : MonoBehaviour {
         string[] str = new string[] { "Prefabs/Characters/Entities/" };
         string[] res;
         res = objectthing.Split(str, StringSplitOptions.RemoveEmptyEntries);
+        string faction = enemy.faction;
         if (inEditor) {
             thingObj = Instantiate(enemy_objects.Find(x => x.name == res[0]).gameObject, enemy.position, Quaternion.identity);
         } else {
 
             if(!enemy.is_disabled)
-                thingObj = ObjectPooler.instance.SpawnObject(res[0], enemy.position, Quaternion.identity, true);
+                thingObj = ObjectPooler.instance.SpawnObject(res[0], faction, enemy.position, Quaternion.identity, true);
             else
-                thingObj = ObjectPooler.instance.SpawnObject(res[0], enemy.position, Quaternion.identity, false);
+                thingObj = ObjectPooler.instance.SpawnObject(res[0],faction, enemy.position, Quaternion.identity, false);
 
         }
 
         o_npcharacter thing =  thingObj.GetComponent<o_npcharacter>();
+        
         thing.Active = (enemy.is_disabled) ? false : true;
         thing.name = enemy.name;
         thingObj.transform.SetParent(lev.transform.Find("Entities").transform);

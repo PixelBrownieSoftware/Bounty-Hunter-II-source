@@ -107,6 +107,18 @@ public sealed class ObjectPooler : MonoBehaviour {
         return obj;
     }
 
+    public GameObject SpawnObject(string tag, string faction, Vector3 position, Quaternion rotation, bool spawn_active)
+    {
+
+        //spawn Generic objects only
+
+        GameObject objtospawn = SpawnObject(tag, faction, spawn_active);
+        objtospawn.transform.position = position;
+        objtospawn.transform.rotation = rotation;
+
+        return objtospawn;
+    }
+
     public GameObject SpawnObject(string tag, Vector3 position, Quaternion rotation, bool spawn_active) {
 
         //spawn Generic objects only
@@ -125,6 +137,37 @@ public sealed class ObjectPooler : MonoBehaviour {
         return objtospawn;
     }
 
+    public GameObject SpawnObject(string tag, string faction, bool spawn_active)
+    {
+        GameObject objtospawn;
+        if (FindUniqueChar(tag))
+        {
+            objtospawn = FindUniqueChar(tag);
+        }
+        else
+        {
+            objtospawn = objpool[tag].Dequeue();
+            objpool[tag].Enqueue(objtospawn);
+        }
+        if (objtospawn == null)
+            return null;
+        objtospawn.SetActive(true);
+        o_character cha = objtospawn.GetComponent<o_character>();
+        if (cha != null)
+        {
+            if (faction != "") {
+                cha.cur_faction = faction;
+            }
+            if (spawn_active)
+                if (objtospawn.GetComponent<IpoolObject>() != null)
+                    objtospawn.GetComponent<IpoolObject>().SpawnStart();
+        }
+        else
+        if (objtospawn.GetComponent<IpoolObject>() != null)
+            objtospawn.GetComponent<IpoolObject>().SpawnStart();
+
+        return objtospawn;
+    }
     public GameObject SpawnObject(string tag, bool spawn_active) {
         GameObject objtospawn;
         if (FindUniqueChar(tag)) {

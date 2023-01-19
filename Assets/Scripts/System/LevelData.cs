@@ -187,6 +187,7 @@ public class LevelData : MonoBehaviour {
         s_characterdat thing = new s_characterdat();
         thing.file_location = "Prefabs/Characters/Entities/" + enemy.type;
         thing.name = enemy.name;
+        thing.faction = enemy.cur_faction;
         thing.is_disabled = enemy.Active ? false: true;
         thing.position = enemy.transform.position;
 
